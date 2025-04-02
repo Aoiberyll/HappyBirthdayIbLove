@@ -25,13 +25,9 @@
         }
         .password-container {
             margin-top: 100px;
-            position: relative;
-            z-index: 1;
         }
         .hidden-content {
             display: none;
-            position: relative;
-            z-index: 1;
         }
         .message-container {
             margin-top: 20px;
@@ -44,29 +40,23 @@
             background: #ff7eb3;
             border: none;
             color: white;
+            position: relative;
         }
-        img {
-            max-width: 300px;
-            margin-top: 20px;
-            border-radius: 15px;
+        #chaseButton {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
         }
-        .small-image {
-    width: 200px;  /* Set a fixed width */
-    height: 200px; /* Set a fixed height */
-    object-fit: cover; /* Crop the image to fit */
-    margin: 10px;
-    border-radius: 10px;
-}
     </style>
 </head>
 <body>
     <!-- Video Background -->
-<video class="video-background" autoplay muted loop playsinline>
-    <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/videomain.webm" type="video/webm">
-    <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/videomain.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
-
+    <video class="video-background" autoplay muted loop>
+        <source src="videomain.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
     
     <div class="password-container">
         <h2>Enter the Special Date:</h2>
@@ -76,18 +66,16 @@
     
     <div class="hidden-content" id="content">
         <h1>Happy Special Day!</h1>
-        <p>Click the button below to reveal your surprise message.</p>
-        <button onclick="showMessage()">Reveal</button>
+        <p>Catch the button 3 times to reveal your surprise message!</p>
+        <button id="chaseButton" onclick="clickChaseButton()">Catch Me!</button>
         <div class="message-container" id="message" style="display:none;">
             <h3>You are an amazing person, and I appreciate you so much! 💖</h3>
         </div>
-        
-        <!-- Images -->
-        <img src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/ghibliivy.png" class="small-image" alt="Image 1">
-        <img src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/yournameartib.png" class="small-image" alt="Image 2">
     </div>
     
     <script>
+        let clickCount = 0;
+
         function checkPassword() {
             const input = document.getElementById('password').value;
             const correctPassword = "030498"; // Replace with actual birth date
@@ -98,9 +86,23 @@
                 alert('Wrong password love! Try again.');
             }
         }
-        
-        function showMessage() {
-            document.getElementById('message').style.display = 'block';
+
+        function clickChaseButton() {
+            clickCount++;
+            if (clickCount >= 3) {
+                document.getElementById('message').style.display = 'block';
+                document.getElementById('chaseButton').style.display = 'none';
+            } else {
+                moveButton();
+            }
+        }
+
+        function moveButton() {
+            const button = document.getElementById('chaseButton');
+            const newX = Math.random() * (window.innerWidth - 100);
+            const newY = Math.random() * (window.innerHeight - 50);
+            button.style.left = `${newX}px`;
+            button.style.top = `${newY}px`;
         }
     </script>
 </body>
