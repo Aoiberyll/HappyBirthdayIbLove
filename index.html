@@ -33,6 +33,14 @@
         }
         .message-container {
             margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%; /* To make sure the message doesn't stretch too wide */
+            max-width: 600px; /* Max width */
+            margin: 0 auto; /* Center the message */
+            color: #fff;
+            font-size: 24px;
         }
         button {
             padding: 10px 20px;
@@ -45,15 +53,12 @@
             z-index: 1;
             position: relative;
         }
-        img {
-            max-width: 300px;
-            margin-top: 20px;
-            border-radius: 15px;
-        }
-        .small-image {
-            max-width: 150px;
-            margin: 10px;
-            border-radius: 10px;
+        /* Center the button in the middle */
+        #revealButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     </style>
 </head>
@@ -132,13 +137,4 @@
             const maxX = window.innerWidth - button.offsetWidth;
             const maxY = window.innerHeight - button.offsetHeight;
 
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
-
-            button.style.position = 'absolute';
-            button.style.left = randomX + 'px';
-            button.style.top = randomY + 'px';
-        }
-    </script>
-</body>
-</html>
+            const
