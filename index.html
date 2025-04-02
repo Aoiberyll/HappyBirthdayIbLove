@@ -79,7 +79,7 @@
     <div class="hidden-content" id="content">
         <h1>Happy Hari Jadi!</h1>
         <p>Click the button below to reveal your surprise message.</p>
-        <button onclick="revealMessage()">Reveal</button>
+        <button id="revealButton" onclick="handleClick()">Catch Me!</button>
         <div class="message-container" id="message" style="display:none;">
             <h3>Thank you for being here, and I appreciate you so much! 💖</h3>
         </div>
@@ -97,6 +97,8 @@
             document.body.addEventListener("click", playMusic, { once: true });
         });
 
+        let clickCount = 0;
+
         function checkPassword() {
             const input = document.getElementById('password').value;
             const correctPassword = "030498"; // Replace with actual birth date
@@ -108,8 +110,34 @@
             }
         }
 
+        function handleClick() {
+            clickCount++;
+
+            // If user clicks 3 times, reveal the message
+            if (clickCount >= 3) {
+                revealMessage();
+            } else {
+                // Move button around to make it "catchable"
+                moveButton();
+            }
+        }
+
         function revealMessage() {
             document.getElementById('message').style.display = 'block';
+            document.getElementById('revealButton').style.display = 'none'; // Hide the button after 3 clicks
+        }
+
+        function moveButton() {
+            const button = document.getElementById('revealButton');
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            button.style.position = 'absolute';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
         }
     </script>
 </body>
