@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Gift</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+        .password-container {
+            margin-top: 100px;
+        }
+        .hidden-content {
+            display: none;
+        }
+        .message-container {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            background: #ff7eb3;
+            border: none;
+            color: white;
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 15px;
+        }
+        #backgroundImage {
+            max-width: 100%;
+            max-height: 500px;
+            margin-top: 20px;
+            display: block;
+            margin: auto;
+        }
+        .gallery {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        .gallery img {
+            max-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-container">
+        <h2>Enter the Special Date:</h2>
+        <input type="password" id="password" placeholder="DDMMYY">
+        <button onclick="checkPassword()">Enter</button>
+    </div>
+    
+    <div class="hidden-content" id="content">
+        <h1>Happy Special Day!</h1>
+        <p>Click the button below to reveal your surprise message.</p>
+        <button onclick="showMessage()">Reveal</button>
+        <div class="message-container" id="message" style="display:none;">
+            <h3>You are an amazing person, and I appreciate you so much! 💖</h3>
+        </div>
+
+        <input type="file" id="imageUpload" accept="image/*" multiple onchange="displayImages(event)">
+        <div id="backgroundImage" style="display:none;"></div>
+        <div class="gallery" id="imageGallery"></div>
+    </div>
+
+    <script>
+        let uploadedImages = [];
+        let backgroundImage = null;
+
+        function checkPassword() {
+            const input = document.getElementById('password').value;
+            const correctPassword = "030498"; // Replace with actual birth date
+            if (input === correctPassword) {
+                document.querySelector('.password-container').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            } else {
+                alert('Wrong password love! Try again.');
+            }
+        }
+
+        function showMessage() {
+            const message = document.getElementById('message');
+            if (message.style.display === 'none' || message.style.display === '') {
+                message.style.display = 'block';
+            } else {
+                message.style.display = 'none';
+            }
+        }
+
+        function displayImages(event) {
+            const files = event.target.files;
+            const gallery = document.getElementById('imageGallery');
+            const backgroundImageContainer = document.getElementById('backgroundImage');
+
+            // Clear previous images from the gallery
+            gallery.innerHTML = '';
+            uploadedImages = [];
+            backgroundImage = null;
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) {
+                    alert('Please upload only image files.');
+                    return;
+                }
+
+                const objectURL = URL.createObjectURL(file);
+                const img = document.createElement('img');
+                img.src = objectURL;
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', () => setBackgroundImage(objectURL));
+
+                uploadedImages.push(objectURL);
+
+                const imageDiv = document.createElement('div');
+                imageDiv.appendChild(img);
+                gallery.appendChild(imageDiv);
+            }
+
+            // Set the first image as background
+            if (files.length > 0) {
+                backgroundImageContainer.src = uploadedImages[0];
+                backgroundImageContainer.style.display = 'block';
+                backgroundImage = uploadedImages[0];
+            }
+        }
+
+        function setBackgroundImage(objectURL) {
+            const backgroundImageContainer = document.getElementById('backgroundImage');
+            if (backgroundImage !== objectURL) {
+                backgroundImageContainer.src = objectURL;
+                backgroundImage = objectURL;
+            }
+        }
+    </script>
+</body>
+</html>
