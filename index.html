@@ -25,6 +25,8 @@
         }
         .password-container {
             margin-top: 100px;
+            z-index: 1;
+            position: relative;
         }
         .hidden-content {
             display: none;
@@ -40,41 +42,60 @@
             background: #ff7eb3;
             border: none;
             color: white;
+            z-index: 1;
             position: relative;
         }
-        #chaseButton {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 15px;
+        }
+        .small-image {
+            max-width: 150px;
+            margin: 10px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
     <!-- Video Background -->
-    <video class="video-background" autoplay muted loop>
-        <source src="videomain.mp4" type="video/mp4">
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/videomain.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/kyoto.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
     <div class="password-container">
         <h2>Enter the Special Date:</h2>
         <input type="password" id="password" placeholder="DDMMYY">
         <button onclick="checkPassword()">Enter</button>
     </div>
-    
+
     <div class="hidden-content" id="content">
-        <h1>Happy Special Day!</h1>
-        <p>Catch the button 3 times to reveal your surprise message!</p>
-        <button id="chaseButton" onclick="clickChaseButton()">Catch Me!</button>
+        <h1>Happy Hari Jadi!</h1>
+        <p>Click the button below to reveal your surprise message.</p>
+        <button onclick="revealMessage()">Reveal</button>
         <div class="message-container" id="message" style="display:none;">
-            <h3>You are an amazing person, and I appreciate you so much! 💖</h3>
+            <h3>Thank you for being here, and I appreciate you so much! 💖</h3>
         </div>
     </div>
-    
+
     <script>
-        let clickCount = 0;
+        // Play music on first click to avoid autoplay restrictions on mobile
+        document.addEventListener("DOMContentLoaded", () => {
+            const music = document.getElementById("bg-music");
+
+            function playMusic() {
+                music.play().catch(error => console.log("Autoplay blocked:", error));
+            }
+
+            document.body.addEventListener("click", playMusic, { once: true });
+        });
 
         function checkPassword() {
             const input = document.getElementById('password').value;
@@ -87,22 +108,8 @@
             }
         }
 
-        function clickChaseButton() {
-            clickCount++;
-            if (clickCount >= 3) {
-                document.getElementById('message').style.display = 'block';
-                document.getElementById('chaseButton').style.display = 'none';
-            } else {
-                moveButton();
-            }
-        }
-
-        function moveButton() {
-            const button = document.getElementById('chaseButton');
-            const newX = Math.random() * (window.innerWidth - 100);
-            const newY = Math.random() * (window.innerHeight - 50);
-            button.style.left = `${newX}px`;
-            button.style.top = `${newY}px`;
+        function revealMessage() {
+            document.getElementById('message').style.display = 'block';
         }
     </script>
 </body>
