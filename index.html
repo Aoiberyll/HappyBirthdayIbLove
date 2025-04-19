@@ -38,24 +38,24 @@
   }
 
   const pages = [
-`Hi Ivy,
+    `Hi Ivy,
 
 It's been a long time since we met — maybe 2018, right? I think we both moved on with our daily lives since. Yeah, we chatted for a while, but nothing has been the same after you rejected me.
 
 I was on a path of denial. I told myself it’s fine, I can be your friend even if we can't be together… so I said we could be friends. But my actions said otherwise.`,
-`I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
+    `I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
 
 I couldn’t say this back then… but I’m sorry for giving you the burden of love — my love, to be exact.`,
-`What I want to convey here is…
+    `What I want to convey here is…
 
 I love you, Ivy.
 
 I love you since we met at school. I love your eyes. I love listening to your voice. I love your awkwardness. I love your bad puns.`,
-`I want to be with you.
+    `I want to be with you.
 I want to spend my remaining life with you — through happy, sad, bad, and joyful days — I want to spend it with you.
 
 Will you be the mother of my future kids, the love of my life?`,
-`If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
+    `If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
 
 Let me help you with an answer:
 
@@ -66,46 +66,50 @@ Fairuz`
   ];
 
   let currentPage = 0;
-  let isTyping = false;
   let typingIndex = 0;
-  let typingTimer;
+  let isTyping = false;
+  let typingTimeout;
 
   function revealMessage() {
     document.getElementById("revealButton").style.display = "none";
     document.getElementById("message").style.display = "block";
-    showPage(currentPage);
+    displayPage(currentPage);
   }
 
-  function showPage(index) {
+  function displayPage(index) {
+    clearTimeout(typingTimeout);
     const letter = document.getElementById("love-letter");
-    if (index < 0 || index >= pages.length) return;
-
-    currentPage = index;
     letter.innerHTML = "";
     typingIndex = 0;
     isTyping = true;
+    const text = pages[index];
 
-    const text = pages[currentPage];
-    function type() {
+    function typeLetter() {
       if (typingIndex < text.length) {
         letter.innerHTML += text.charAt(typingIndex);
         typingIndex++;
-        typingTimer = setTimeout(type, 25);
+        typingTimeout = setTimeout(typeLetter, 25);
       } else {
         isTyping = false;
       }
     }
-    type();
 
-    document.getElementById("prevBtn").style.display = currentPage > 0 ? "inline-block" : "none";
-    document.getElementById("nextBtn").style.display = currentPage < pages.length - 1 ? "inline-block" : "none";
+    typeLetter();
+    updateButtons();
+  }
+
+  function skipTyping() {
+    clearTimeout(typingTimeout);
+    isTyping = false;
+    document.getElementById("love-letter").innerHTML = pages[currentPage];
   }
 
   function nextPage() {
     if (isTyping) {
       skipTyping();
     } else if (currentPage < pages.length - 1) {
-      showPage(currentPage + 1);
+      currentPage++;
+      displayPage(currentPage);
     }
   }
 
@@ -113,13 +117,13 @@ Fairuz`
     if (isTyping) {
       skipTyping();
     } else if (currentPage > 0) {
-      showPage(currentPage - 1);
+      currentPage--;
+      displayPage(currentPage);
     }
   }
 
-  function skipTyping() {
-    clearTimeout(typingTimer);
-    isTyping = false;
-    document.getElementById("love-letter").innerHTML = pages[currentPage];
+  function updateButtons() {
+    document.getElementById("prevBtn").style.display = currentPage > 0 ? "inline-block" : "none";
+    document.getElementById("nextBtn").style.display = currentPage < pages.length - 1 ? "inline-block" : "none";
   }
 </script>
