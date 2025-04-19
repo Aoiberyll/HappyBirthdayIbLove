@@ -18,7 +18,6 @@
   }
 
   let clickCount = 0;
-
   function handleClick() {
     clickCount++;
     if (clickCount >= 3) {
@@ -68,25 +67,35 @@ Fairuz`
 
   let currentPage = 0;
   let isTyping = false;
-  let typingTimeout;
+  let typingIndex = 0;
+  let typingTimer;
 
   function revealMessage() {
     document.getElementById("revealButton").style.display = "none";
     document.getElementById("message").style.display = "block";
-    displayPage(currentPage);
+    showPage(currentPage);
   }
 
-  function displayPage(index) {
+  function showPage(index) {
     const letter = document.getElementById("love-letter");
-    if (isTyping) {
-      clearTimeout(typingTimeout);
-      isTyping = false;
-      letter.innerHTML = pages[currentPage];
-    }
+    if (index < 0 || index >= pages.length) return;
 
     currentPage = index;
     letter.innerHTML = "";
-    typeWriter(pages[currentPage], "love-letter", 25);
+    typingIndex = 0;
+    isTyping = true;
+
+    const text = pages[currentPage];
+    function type() {
+      if (typingIndex < text.length) {
+        letter.innerHTML += text.charAt(typingIndex);
+        typingIndex++;
+        typingTimer = setTimeout(type, 25);
+      } else {
+        isTyping = false;
+      }
+    }
+    type();
 
     document.getElementById("prevBtn").style.display = currentPage > 0 ? "inline-block" : "none";
     document.getElementById("nextBtn").style.display = currentPage < pages.length - 1 ? "inline-block" : "none";
@@ -94,38 +103,23 @@ Fairuz`
 
   function nextPage() {
     if (isTyping) {
-      clearTimeout(typingTimeout);
-      isTyping = false;
-      document.getElementById("love-letter").innerHTML = pages[currentPage];
+      skipTyping();
     } else if (currentPage < pages.length - 1) {
-      displayPage(currentPage + 1);
+      showPage(currentPage + 1);
     }
   }
 
   function prevPage() {
     if (isTyping) {
-      clearTimeout(typingTimeout);
-      isTyping = false;
-      document.getElementById("love-letter").innerHTML = pages[currentPage];
+      skipTyping();
     } else if (currentPage > 0) {
-      displayPage(currentPage - 1);
+      showPage(currentPage - 1);
     }
   }
 
-  function typeWriter(text, elementId, speed) {
-    let i = 0;
-    const element = document.getElementById(elementId);
-    isTyping = true;
-
-    function type() {
-      if (i < text.length) {
-        element.innerHTML += text.charAt(i);
-        i++;
-        typingTimeout = setTimeout(type, speed);
-      } else {
-        isTyping = false;
-      }
-    }
-    type();
+  function skipTyping() {
+    clearTimeout(typingTimer);
+    isTyping = false;
+    document.getElementById("love-letter").innerHTML = pages[currentPage];
   }
 </script>
