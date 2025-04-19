@@ -1,61 +1,209 @@
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const music = document.getElementById("bg-music");
-    document.body.addEventListener("click", () => {
-      music.play().catch(() => {});
-    }, { once: true });
-  });
-
-  function checkPassword() {
-    const input = document.getElementById("password").value;
-    const correctPassword = "030498";
-    if (input === correctPassword) {
-      document.querySelector(".password-container").style.display = "none";
-      document.getElementById("content").style.display = "block";
-    } else {
-      alert("Wrong password love! Try again.");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Special Gift</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
     }
-  }
 
-  let clickCount = 0;
-  function handleClick() {
-    clickCount++;
-    if (clickCount >= 3) {
-      revealMessage();
-    } else {
-      moveButton();
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
-  }
 
-  function moveButton() {
-    const button = document.getElementById("revealButton");
-    const maxX = window.innerWidth - button.offsetWidth;
-    const maxY = window.innerHeight - button.offsetHeight;
-    const randomX = Math.floor(Math.random() * maxX);
-    const randomY = Math.floor(Math.random() * maxY);
-    button.style.left = randomX + "px";
-    button.style.top = randomY + "px";
-  }
+    .password-container {
+      margin-top: 100px;
+      z-index: 1;
+      position: relative;
+      padding: 20px;
+    }
 
-  const pages = [
-    `Hi Ivy,
+    input[type="password"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 10px;
+      background: #ff7eb3;
+      border: none;
+      color: white;
+      margin-top: 10px;
+    }
+
+    .special-note {
+      margin-top: 20px;
+      font-size: 18px;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 15px;
+      border-radius: 12px;
+      display: inline-block;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .hidden-content {
+      display: none;
+    }
+
+    .message-container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+
+    #revealButton {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #pageControls {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    @media screen and (max-width: 600px) {
+      h2, h1 {
+        font-size: 24px;
+      }
+
+      .special-note {
+        font-size: 16px;
+      }
+
+      .message-container p {
+        font-size: 16px;
+      }
+
+      button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Video Background -->
+  <video class="video-background" autoplay muted loop playsinline>
+    <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/videomain.mp4" type="video/mp4" />
+  </video>
+
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/kyoto.mp3" type="audio/mp3" />
+  </audio>
+
+  <!-- Password Page -->
+  <div class="password-container">
+    <h2>Enter the Special Date:</h2>
+    <input type="password" id="password" placeholder="DDMMYY" />
+    <br />
+    <button onclick="checkPassword()">Enter</button>
+    <div class="special-note">
+      A special message has been updated for you who is special.
+    </div>
+  </div>
+
+  <!-- Hidden Message Content -->
+  <div class="hidden-content" id="content">
+    <h1>Happy Hari Jadi!</h1>
+    <p>Click the button below to reveal your surprise message.</p>
+    <button id="revealButton" onclick="handleClick()">Catch Me!</button>
+
+    <div class="message-container" id="message" style="display: none;">
+      <h3 style="margin-bottom: 20px;">From me, to you 💌</h3>
+      <p id="love-letter" style="white-space: pre-wrap; text-align: left;"></p>
+      <div id="pageControls">
+        <button onclick="prevPage()" id="prevBtn" style="display: none;">Previous</button>
+        <button onclick="nextPage()" id="nextBtn">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const music = document.getElementById("bg-music");
+      document.body.addEventListener("click", () => {
+        music.play().catch(() => {});
+      }, { once: true });
+    });
+
+    function checkPassword() {
+      const input = document.getElementById("password").value;
+      const correctPassword = "030498";
+      if (input === correctPassword) {
+        document.querySelector(".password-container").style.display = "none";
+        document.getElementById("content").style.display = "block";
+      } else {
+        alert("Wrong password love! Try again.");
+      }
+    }
+
+    let clickCount = 0;
+
+    function handleClick() {
+      clickCount++;
+      if (clickCount >= 3) {
+        revealMessage();
+      } else {
+        moveButton();
+      }
+    }
+
+    function moveButton() {
+      const button = document.getElementById("revealButton");
+      const maxX = window.innerWidth - button.offsetWidth;
+      const maxY = window.innerHeight - button.offsetHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      button.style.left = randomX + "px";
+      button.style.top = randomY + "px";
+    }
+
+    const pages = [
+`Hi Ivy,
 
 It's been a long time since we met — maybe 2018, right? I think we both moved on with our daily lives since. Yeah, we chatted for a while, but nothing has been the same after you rejected me.
 
 I was on a path of denial. I told myself it’s fine, I can be your friend even if we can't be together… so I said we could be friends. But my actions said otherwise.`,
-    `I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
+`I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
 
 I couldn’t say this back then… but I’m sorry for giving you the burden of love — my love, to be exact.`,
-    `What I want to convey here is…
+`What I want to convey here is…
 
 I love you, Ivy.
 
 I love you since we met at school. I love your eyes. I love listening to your voice. I love your awkwardness. I love your bad puns.`,
-    `I want to be with you.
+`I want to be with you.
 I want to spend my remaining life with you — through happy, sad, bad, and joyful days — I want to spend it with you.
 
 Will you be the mother of my future kids, the love of my life?`,
-    `If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
+`If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
 
 Let me help you with an answer:
 
@@ -63,67 +211,52 @@ Just chat “yes” on WhatsApp — and I will understand the meaning behind tho
 
 – Sincerely, your love  
 Fairuz`
-  ];
+    ];
 
-  let currentPage = 0;
-  let typingIndex = 0;
-  let isTyping = false;
-  let typingTimeout;
+    let currentPage = 0;
 
-  function revealMessage() {
-    document.getElementById("revealButton").style.display = "none";
-    document.getElementById("message").style.display = "block";
-    displayPage(currentPage);
-  }
+    function revealMessage() {
+      document.getElementById("revealButton").style.display = "none";
+      document.getElementById("message").style.display = "block";
+      displayPage(currentPage);
+    }
 
-  function displayPage(index) {
-    clearTimeout(typingTimeout);
-    const letter = document.getElementById("love-letter");
-    letter.innerHTML = "";
-    typingIndex = 0;
-    isTyping = true;
-    const text = pages[index];
+    function displayPage(index) {
+      const letter = document.getElementById("love-letter");
+      letter.innerHTML = "";
+      typeWriter(pages[index], "love-letter", 25);
 
-    function typeLetter() {
-      if (typingIndex < text.length) {
-        letter.innerHTML += text.charAt(typingIndex);
-        typingIndex++;
-        typingTimeout = setTimeout(typeLetter, 25);
-      } else {
-        isTyping = false;
+      document.getElementById("prevBtn").style.display = index > 0 ? "inline-block" : "none";
+      document.getElementById("nextBtn").style.display = index < pages.length - 1 ? "inline-block" : "none";
+    }
+
+    function nextPage() {
+      if (currentPage < pages.length - 1) {
+        currentPage++;
+        displayPage(currentPage);
       }
     }
 
-    typeLetter();
-    updateButtons();
-  }
-
-  function skipTyping() {
-    clearTimeout(typingTimeout);
-    isTyping = false;
-    document.getElementById("love-letter").innerHTML = pages[currentPage];
-  }
-
-  function nextPage() {
-    if (isTyping) {
-      skipTyping();
-    } else if (currentPage < pages.length - 1) {
-      currentPage++;
-      displayPage(currentPage);
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        displayPage(currentPage);
+      }
     }
-  }
 
-  function prevPage() {
-    if (isTyping) {
-      skipTyping();
-    } else if (currentPage > 0) {
-      currentPage--;
-      displayPage(currentPage);
+    function typeWriter(text, elementId, speed) {
+      let i = 0;
+      const element = document.getElementById(elementId);
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(type, speed);
+        }
+      }
+      type();
     }
-  }
+  </script>
+</body>
+</html>
 
-  function updateButtons() {
-    document.getElementById("prevBtn").style.display = currentPage > 0 ? "inline-block" : "none";
-    document.getElementById("nextBtn").style.display = currentPage < pages.length - 1 ? "inline-block" : "none";
-  }
-</script>
