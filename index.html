@@ -3,246 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Special Gift</title>
+  <title>Love Letter</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Arial', sans-serif;
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
-    }
-
-    .video-background {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
-
-    .password-container {
-      margin-top: 100px;
-      z-index: 1;
-      position: relative;
-      padding: 20px;
-    }
-
-    input[type="password"] {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 10px;
-      background: #ff7eb3;
-      border: none;
-      color: white;
-      margin-top: 10px;
-    }
-
-    .special-note {
-      margin-top: 20px;
-      font-size: 18px;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 15px;
-      border-radius: 12px;
-      display: inline-block;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    .hidden-content {
-      display: none;
-    }
-
-    .message-container {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 600px;
-      margin: 20px auto;
-    }
-
-    #revealButton {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    #pageControls {
-      margin-top: 20px;
+      background-color: #fff0f5;
+      font-family: "Georgia", serif;
       display: flex;
-      justify-content: center;
-      gap: 10px;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+      color: #8b0000;
     }
 
-    @media screen and (max-width: 600px) {
-      h2, h1 {
-        font-size: 24px;
+    #love-letter {
+      max-width: 600px;
+      font-size: 1.2rem;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      border: 2px solid #ffc0cb;
+      padding: 20px;
+      background-color: #fffaf0;
+      border-radius: 10px;
+      min-height: 200px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .navigation {
+      margin-top: 20px;
+    }
+
+    .nav-btn {
+      background-color: #ff69b4;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background-color: #ff1493;
+    }
+
+    @media (max-width: 768px) {
+      #love-letter {
+        font-size: 1rem;
+        padding: 15px;
       }
 
-      .special-note {
-        font-size: 16px;
-      }
-
-      .message-container p {
-        font-size: 16px;
-      }
-
-      button {
-        font-size: 14px;
+      .nav-btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Video Background -->
-  <video class="video-background" autoplay muted loop playsinline>
-    <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/videomain.mp4" type="video/mp4" />
-  </video>
 
-  <!-- Background Music -->
-  <audio id="bg-music" loop>
-    <source src="https://raw.githubusercontent.com/Aoiberyll/HappyBirthdayIbLove/main/kyoto.mp3" type="audio/mp3" />
-  </audio>
-
-  <!-- Password Page -->
-  <div class="password-container">
-    <h2>Enter the Special Date:</h2>
-    <input type="password" id="password" placeholder="DDMMYY" />
-    <br />
-    <button onclick="checkPassword()">Enter</button>
-    <div class="special-note">
-      A special message has been updated for you who is special.
-    </div>
+  <div id="love-letter"></div>
+  <div class="navigation">
+    <button id="prevBtn" class="nav-btn" onclick="prevPage()">Previous</button>
+    <button id="nextBtn" class="nav-btn" onclick="nextPage()">Next</button>
   </div>
 
-  <!-- Hidden Message Content -->
-  <div class="hidden-content" id="content">
-    <h1>Happy Hari Jadi!</h1>
-    <p>Click the button below to reveal your surprise message.</p>
-    <button id="revealButton" onclick="handleClick()">Catch Me!</button>
-
-    <div class="message-container" id="message" style="display: none;">
-      <h3 style="margin-bottom: 20px;">From me, to you 💌</h3>
-      <p id="love-letter" style="white-space: pre-wrap; text-align: left;"></p>
-      <div id="pageControls">
-        <button onclick="prevPage()" id="prevBtn" style="display: none;">Previous</button>
-        <button onclick="nextPage()" id="nextBtn">Next</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Script -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const music = document.getElementById("bg-music");
-      document.body.addEventListener("click", () => {
-        music.play().catch(() => {});
-      }, { once: true });
-    });
-
-    function checkPassword() {
-      const input = document.getElementById("password").value;
-      const correctPassword = "030498";
-      if (input === correctPassword) {
-        document.querySelector(".password-container").style.display = "none";
-        document.getElementById("content").style.display = "block";
-      } else {
-        alert("Wrong password love! Try again.");
-      }
-    }
-
-    let clickCount = 0;
-
-    function handleClick() {
-      clickCount++;
-      if (clickCount >= 3) {
-        revealMessage();
-      } else {
-        moveButton();
-      }
-    }
-
-    function moveButton() {
-      const button = document.getElementById("revealButton");
-      const maxX = window.innerWidth - button.offsetWidth;
-      const maxY = window.innerHeight - button.offsetHeight;
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
-      button.style.left = randomX + "px";
-      button.style.top = randomY + "px";
-    }
-
     const pages = [
-`Hi Ivy,
-
-It's been a long time since we met — maybe 2018, right? I think we both moved on with our daily lives since. Yeah, we chatted for a while, but nothing has been the same after you rejected me.
-
-I was on a path of denial. I told myself it’s fine, I can be your friend even if we can't be together… so I said we could be friends. But my actions said otherwise.`,
-`I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
-
-I couldn’t say this back then… but I’m sorry for giving you the burden of love — my love, to be exact.`,
-`What I want to convey here is…
-
-I love you, Ivy.
-
-I love you since we met at school. I love your eyes. I love listening to your voice. I love your awkwardness. I love your bad puns.`,
-`I want to be with you.
-I want to spend my remaining life with you — through happy, sad, bad, and joyful days — I want to spend it with you.
-
-Will you be the mother of my future kids, the love of my life?`,
-`If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
-
-Let me help you with an answer:
-
-Just chat “yes” on WhatsApp — and I will understand the meaning behind those words.
-
-– Sincerely, your love  
-Fairuz`
+      "My Dearest,\n\nFrom the moment we met, something inside me changed. Your smile, your laughter, the way your eyes light up when you talk about the things you love — all of it became etched in my heart.",
+      "Every day with you feels like a new page in a beautiful story. You've shown me what it means to care deeply, to love fiercely, and to cherish every shared moment — even the quiet ones.",
+      "No matter what the world throws at us, know that I'm always here — cheering you on, supporting you, and loving you more with each passing day.",
+      "So here’s to us, to our journey, and to the countless memories we'll continue to create together. I love you, always."
     ];
 
     let currentPage = 0;
-    let typingTimeout = null;
+    let activeTyping = [];
 
-    function revealMessage() {
-      document.getElementById("revealButton").style.display = "none";
-      document.getElementById("message").style.display = "block";
-      displayPage(currentPage);
+    function typeWriter(text, elementId, speed) {
+      let i = 0;
+      const element = document.getElementById(elementId);
+      element.innerHTML = "";
+
+      function type() {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+          const timeout = setTimeout(type, speed);
+          activeTyping.push(timeout);
+        }
+      }
+
+      type();
     }
 
     function displayPage(index) {
-      const letter = document.getElementById("love-letter");
-
-      // Stop ongoing typing
-      if (typingTimeout) {
-        clearTimeout(typingTimeout);
-        typingTimeout = null;
+      // Clear all active typing intervals
+      for (let timeout of activeTyping) {
+        clearTimeout(timeout);
       }
+      activeTyping = [];
 
-      letter.innerHTML = ""; // Clear before typing
-      typeWriter(pages[index], "love-letter", 25);
+      const letter = document.getElementById("love-letter");
+      letter.innerHTML = "";
+
+      // Slight delay for smooth effect
+      setTimeout(() => {
+        typeWriter(pages[index], "love-letter", 25);
+      }, 50);
 
       document.getElementById("prevBtn").style.display = index > 0 ? "inline-block" : "none";
       document.getElementById("nextBtn").style.display = index < pages.length - 1 ? "inline-block" : "none";
-    }
-
-    function nextPage() {
-      if (currentPage < pages.length - 1) {
-        currentPage++;
-        displayPage(currentPage);
-      }
     }
 
     function prevPage() {
@@ -252,21 +124,15 @@ Fairuz`
       }
     }
 
-    function typeWriter(text, elementId, speed) {
-      let i = 0;
-      const element = document.getElementById(elementId);
-      element.innerHTML = ""; // Ensure it's cleared
-
-      function type() {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-          typingTimeout = setTimeout(type, speed);
-        }
+    function nextPage() {
+      if (currentPage < pages.length - 1) {
+        currentPage++;
+        displayPage(currentPage);
       }
-
-      type();
     }
+
+    // Initial display
+    displayPage(currentPage);
   </script>
 </body>
 </html>
