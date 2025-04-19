@@ -39,24 +39,24 @@
   }
 
   const pages = [
-    `Hi Ivy,
+`Hi Ivy,
 
 It's been a long time since we met — maybe 2018, right? I think we both moved on with our daily lives since. Yeah, we chatted for a while, but nothing has been the same after you rejected me.
 
 I was on a path of denial. I told myself it’s fine, I can be your friend even if we can't be together… so I said we could be friends. But my actions said otherwise.`,
-    `I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
+`I couldn’t see your effort back then, trying to get close to me. I was also naive. I didn’t notice your hints… and then you rejected me — which I'm thankful and sad about at the same time.
 
 I couldn’t say this back then… but I’m sorry for giving you the burden of love — my love, to be exact.`,
-    `What I want to convey here is…
+`What I want to convey here is…
 
 I love you, Ivy.
 
 I love you since we met at school. I love your eyes. I love listening to your voice. I love your awkwardness. I love your bad puns.`,
-    `I want to be with you.
+`I want to be with you.
 I want to spend my remaining life with you — through happy, sad, bad, and joyful days — I want to spend it with you.
 
 Will you be the mother of my future kids, the love of my life?`,
-    `If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
+`If I'm right… you'll see this and probably turn red, heart beating faster than you ever imagined, and not knowing what to say.
 
 Let me help you with an answer:
 
@@ -67,7 +67,7 @@ Fairuz`
   ];
 
   let currentPage = 0;
-  let typingInProgress = false;
+  let isTyping = false;
   let typingTimeout;
 
   function revealMessage() {
@@ -78,11 +78,9 @@ Fairuz`
 
   function displayPage(index) {
     const letter = document.getElementById("love-letter");
-
-    if (typingInProgress) {
-      // Finish the current typing immediately
+    if (isTyping) {
       clearTimeout(typingTimeout);
-      typingInProgress = false;
+      isTyping = false;
       letter.innerHTML = pages[currentPage];
     }
 
@@ -95,13 +93,21 @@ Fairuz`
   }
 
   function nextPage() {
-    if (currentPage < pages.length - 1) {
+    if (isTyping) {
+      clearTimeout(typingTimeout);
+      isTyping = false;
+      document.getElementById("love-letter").innerHTML = pages[currentPage];
+    } else if (currentPage < pages.length - 1) {
       displayPage(currentPage + 1);
     }
   }
 
   function prevPage() {
-    if (currentPage > 0) {
+    if (isTyping) {
+      clearTimeout(typingTimeout);
+      isTyping = false;
+      document.getElementById("love-letter").innerHTML = pages[currentPage];
+    } else if (currentPage > 0) {
       displayPage(currentPage - 1);
     }
   }
@@ -109,23 +115,17 @@ Fairuz`
   function typeWriter(text, elementId, speed) {
     let i = 0;
     const element = document.getElementById(elementId);
-    typingInProgress = true;
+    isTyping = true;
 
     function type() {
-      if (!typingInProgress) {
-        element.innerHTML = text;
-        return;
-      }
-
       if (i < text.length) {
         element.innerHTML += text.charAt(i);
         i++;
         typingTimeout = setTimeout(type, speed);
       } else {
-        typingInProgress = false;
+        isTyping = false;
       }
     }
-
     type();
   }
 </script>
