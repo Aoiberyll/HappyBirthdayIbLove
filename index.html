@@ -214,6 +214,7 @@ Fairuz`
     ];
 
     let currentPage = 0;
+    let typingTimeout = null;
 
     function revealMessage() {
       document.getElementById("revealButton").style.display = "none";
@@ -223,7 +224,14 @@ Fairuz`
 
     function displayPage(index) {
       const letter = document.getElementById("love-letter");
-      letter.innerHTML = "";
+
+      // Stop ongoing typing
+      if (typingTimeout) {
+        clearTimeout(typingTimeout);
+        typingTimeout = null;
+      }
+
+      letter.innerHTML = ""; // Clear before typing
       typeWriter(pages[index], "love-letter", 25);
 
       document.getElementById("prevBtn").style.display = index > 0 ? "inline-block" : "none";
@@ -247,16 +255,18 @@ Fairuz`
     function typeWriter(text, elementId, speed) {
       let i = 0;
       const element = document.getElementById(elementId);
+      element.innerHTML = ""; // Ensure it's cleared
+
       function type() {
         if (i < text.length) {
           element.innerHTML += text.charAt(i);
           i++;
-          setTimeout(type, speed);
+          typingTimeout = setTimeout(type, speed);
         }
       }
+
       type();
     }
   </script>
 </body>
 </html>
-
